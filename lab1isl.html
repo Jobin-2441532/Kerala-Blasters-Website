@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Blasters FC</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        header {
+            background: #009688;
+            color: white;
+            padding: 1.5em 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        footer {
+            text-align: center;
+            background: #009688;
+            color: #fff;
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>INDIAN SUPER LEAGUE - ISL</h1>
+    </header>
+    <br/><br/><br/>
+    <p>The Indian Super League (ISL) is the top professional football league in India, established in 2014 to promote and develop the sport in the country. It operates
+       under the All India Football Federation (AIFF) and features some of the best domestic and international players. The league follows a franchise-based system,
+        similar to the Indian Premier League (IPL) in cricket, with teams representing various cities across India.
+
+      Initially, ISL had eight teams, but over the years, it expanded, adding clubs like Bengaluru FC and Hyderabad FC. The league has attracted international
+       stars such as Alessandro Del Piero, Diego Forlán, Robert Pires, and Nicolas Anelka, significantly raising its global profile.
+      
+      ISL has played a crucial role in improving Indian football, providing a competitive platform for young players. Many Indian footballers, including Sunil 
+      Chhetri, Sahal Abdul Samad, and Gurpreet Singh Sandhu, have gained exposure through the league. It also contributed to India’s improved FIFA rankings and 
+      increased football popularity nationwide.
+      
+      The league follows a regular season followed by playoffs and a grand final to determine the champion. With increasing fan engagement, better infrastructure, and 
+      rising investments, the ISL is shaping the future of Indian football.</p>
+    <section class="container mt-5">
+        <button class="btn btn-primary mb-3" onclick="loadFootballData()">Fetch Football Data</button>
+        <table>
+            <tr>
+                <th>Team Name</th>
+                <th>Stadium</th>
+                <th>Coach</th>
+            </tr>
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Indian Super League. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function loadFootballData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "football.xml", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        displayFootballData(xhr.responseXML);
+                    } else {
+                        alert("Error loading data. Status: " + xhr.status);
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+
+        function displayFootballData(xml) {
+            if (!xml || !xml.getElementsByTagName) {
+                console.error("Invalid XML document received");
+                return;
+            }
+
+            const table = document.querySelector("table");
+            const teams = xml.getElementsByTagName("team");
+
+            if (teams.length === 0) {
+                const noDataRow = document.createElement("tr");
+                noDataRow.innerHTML = '<td colspan="3">No football data found.</td>';
+                table.appendChild(noDataRow);
+                return;
+            }
+
+            for (let i = 0; i < teams.length; i++) {
+                const team = teams[i];
+                try {
+                    const name = team.getElementsByTagName("name")[0]?.textContent || "N/A";
+                    const stadium = team.getElementsByTagName("stadium")[0]?.textContent || "N/A";
+                    const coach = team.getElementsByTagName("coach")[0]?.textContent || "N/A";
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${name}</td>
+                        <td>${stadium}</td>
+                        <td>${coach}</td>
+                    `;
+
+                    table.appendChild(row);
+                } catch (error) {
+                    console.error(`Error processing team at index ${i}:`, error);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MerchandiseApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Blasters Merchandise</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<style>
+    h2{
+        font-size:xx-large;
+    }
+    .shop{
+        display: flex;
+    }
+</style>
+<body ng-controller="MerchandiseController" style="background-color: rgb(234, 242, 126); margin-top: 0%;" >
+
+
+    <h2 style="color:rgb(15, 15, 14);font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif " ><center>Kerala Blasters Official Merchandise</center></h2>
+    <br/><br/>
+    <div class="shop">
+        <img src="Screenshot (255).png"height="550px" width="500px" onclick="window.location.href='https://www.fancode.com/shop/category/jerseys/kerala-blasters-fc-customised-official-2024-third-edition-jacquard-polyester-fan-jersey/FCJSM4114CU'"><br/><br/><br/><br/><br/>
+        <img src="Screenshot (256).png" height="550px" width="500px" onclick="window.location.href='https://www.fancode.com/shop/category/jerseys/kerala-blasters-fc-customised-official-2024-away-jacquard-polyester-fan-jersey/FCJSM4113CU'"><br/><br/><br/><br/><br/>
+        <img src="Screenshot (257).png" height="550px" width="500px" onclick="window.location.href='https://www.fancode.com/shop/category/jerseys/kerala-blasters-fc-official-2024-away-jacquard-polyester-fan-jersey/FCJSM4113'"><br/><br/><br/><br/><br/>
+        <img src="Screenshot (258).png" height="550px" width="500px" onclick="window.location.href='https://www.fancode.com/shop/category/jerseys/kerala-blasters-fc-official-2024-home-jacquard-polyester-fan-jersey/FCJSM4115'"><br/><br/><br/><br/><br/>
+    </div>
+    <br/><br/><br/>
+    <!-- Sorting and Filtering -->
+    <label>Sort by:</label>
+    <select ng-model="sortAttribute">
+        <option value="price">Price</option>
+        <option value="releaseDate">Release Date</option>
+        <option value="stock">Stock</option>
+    </select>
+    <button ng-click="reverseSort = !reverseSort">Toggle Order</button>
+
+    <label>Search:</label>
+    <input type="text" ng-model="searchText" placeholder="Search merchandise">
+
+    <!-- Table of Merchandise -->
+    <table border="1" ng-if="merchandise">
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price (₹)</th>
+            <th>Release Date</th>
+            <th>Stock</th>
+        </tr>
+        <tr ng-repeat="item in merchandise | filter:searchText | orderBy:sortAttribute:reverseSort | limitTo:5">
+            <td>{{ item.name | uppercase }}</td>
+            <td>{{ item.category | lowercase }}</td>
+            <td>{{ item.price | currency:'₹' }}</td>
+            <td>{{ item.releaseDate | date:'longDate' }}</td>
+            <td>{{ item.stock | number }}</td>
+        </tr>
+    </table>
+
+</body>
+</html>
